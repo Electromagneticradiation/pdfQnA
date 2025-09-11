@@ -1,7 +1,7 @@
 [project]
 name = "pdfQnA"
 version = "0.1.0"
-description = "a tool to answer your questions related to a PDF (that you uploaded) "
+description = "a tool to answer your questions related to a PDF (that you upload) "
 authors = [
     {name = "Snow", email = "githubwithsnow@gmail.com"},
 ]
