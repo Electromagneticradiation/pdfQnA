@@ -1,4 +1,5 @@
 import os
+import time
 import requests
 import pdfplumber
 from groq import Groq
@@ -65,7 +66,44 @@ def query_groq(question, context):
 
 ### streamlit UI ###
 
-st.title("📄 PDF Q&A with Jina + Groq")
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+    body {
+        background-color: #2d0036;
+    }
+    .main {
+        background-color: #2d0036;
+    }
+    .cursive-title {
+        font-family: 'Pacifico', cursive;
+        font-size: 3em;
+        color: #fff0fa;
+        text-align: center;
+        margin-bottom: 0.2em;
+        margin-top: 0.5em;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 8px #7a1fa2;
+    }
+    .custom-tagline {
+        font-family: 'Quicksand', sans-serif;
+        font-size: 0.7em;
+        color: #c7a8e5;
+        text-align: center;
+        margin-top: 0.1em;
+        margin-bottom: 2.2em;
+        letter-spacing: 1px;
+        font-weight: 800;
+    }    
+    div[data-testid="stProgress"] > div > div > div {
+    background-color: #a259f7 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+st.markdown('<div class="cursive-title">Readophile</div>', unsafe_allow_html=True)
+st.markdown('<div class="custom-tagline"> perfect for kids who like to play with PDF files ^^ </div>', unsafe_allow_html=True)
 
 uploaded = st.file_uploader("Upload a PDF", type="pdf")
 
@@ -74,9 +112,17 @@ if uploaded:
     with open(tmp_path, "wb") as f:
         f.write(uploaded.getbuffer())
 
-    st.info("Extracting & embedding with Jina...")
+    progress_bar = st.progress(0)
+    # extract text chunks
+    progress_bar.progress(20, text="intersting pdf...")
     chunks = extract_text_chunks(tmp_path)
+    # build vector DB
+    progress_bar.progress(70, text="mono-neuronal thinking in progress...")
     vectordb = build_chroma_with_jina(chunks)
+    # done
+    progress_bar.progress(100)
+    time.sleep(0.5)
+    progress_bar.empty()
 
     query = st.text_input("Ask a question about this PDF:")
     if query:
