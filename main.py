@@ -10,7 +10,7 @@ from langchain.embeddings.base import Embeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 
-# we'll use jina for embedding model & groq for llm
+### we'll use jina's embedding model & groq's llama ###
 
 load_dotenv()
 JINA_API_KEY = os.getenv("JINA_API_KEY")
@@ -26,24 +26,21 @@ def extract_text_chunks(pdf_path):
             text = page.extract_text()
             if text:
                 content.append(text)
-
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     return splitter.split_text("\n\n".join(content))
 
 def get_jina_embeddings(items, task="retrieval.passage"):
-    """Send text(s) to Jina for embeddings."""
     payload = {"model": "jina-embeddings-v4", "task": task, "input": items}
     resp = requests.post(JINA_URL, headers=HEADERS, json=payload)
     resp.raise_for_status()
     return [item["embedding"] for item in resp.json()["data"]]
 
-class JinaEmbeddings(Embeddings):
-    """LangChain wrapper to use Jina for both documents and queries."""
+### langChain wrapper to use jina for both documents and queries ###
 
+class JinaEmbeddings(Embeddings):
     def embed_documents(self, texts):
         inputs = [{"text": t} for t in texts]
         return get_jina_embeddings(inputs, task="retrieval.passage")
-
     def embed_query(self, text):
         return get_jina_embeddings([{"text": text}], task="retrieval.query")[0]
 
@@ -65,9 +62,9 @@ def query_groq(question, context):
     )
     return completion.choices[0].message.content
 
-# -------------------
-# Streamlit UI
-# -------------------
+
+### streamlit UI ###
+
 st.title("📄 PDF Q&A with Jina + Groq")
 
 uploaded = st.file_uploader("Upload a PDF", type="pdf")
