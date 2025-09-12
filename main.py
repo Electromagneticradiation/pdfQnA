@@ -13,8 +13,8 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 ### we'll use jina's embedding model & groq's llama ###
 
-JINA_API_KEY = st.secrets("JINA_API_KEY")
-GROQ_API_KEY = st.secrets("GROQ_API_KEY")
+JINA_API_KEY = st.secrets["JINA_API_KEY"]
+GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 '''
 load_dotenv()
 JINA_API_KEY = os.getenv("JINA_API_KEY")
