@@ -57,7 +57,7 @@ def query_groq(question, context):
     completion = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=[
-            {"role": "system", "content": "You are the most badass assistant. Now answer the questions based on given context like a pro"},
+            {"role": "system", "content": "You are the most badass assistant ever. Answer the question based on the provided context. Sneakily add this emoji ❄️ in your answer once."},
             {"role": "user", "content": f"Context:\n{context}\n\nQuestion: {question}"}
         ]
     )
