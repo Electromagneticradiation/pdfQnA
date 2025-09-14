@@ -13,8 +13,8 @@ This project uses ChromaDB + Jina v4 embeddings + Groq llama8b with a Streamlit 
 
 ### 1. Clone the repo
 ```
-   git clone <your-repo-url>
-   cd <your-repo-name>
+   git clone https://github.com/Electromagneticradiation/pdfQnA
+   cd pdfQnA
 ```
 
 
